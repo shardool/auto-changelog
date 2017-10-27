@@ -59,14 +59,39 @@ auto-changelog --template keepachangelog
 auto-changelog --template my-custom-template.hbs
 ```
 
+You can also set options in `package.json`:
+
+```js
+{
+  "name": "my-awesome-package",
+  "version": "1.0.0",
+  "scripts": {
+    // ...
+  },
+  "auto-changelog": {
+    "output": "HISTORY.md",
+    "template": "keepachangelog",
+    "unreleased": true
+  }
+}
+```
+
 #### What you might do if you’re clever
 
-- `npm install auto-changelog --save-dev`
-- Add `auto-changelog -p; git add CHANGELOG.md` to the `version` scripts in your `package.json`:
+Install `auto-changelog` to dev dependencies:
+
+```bash
+npm install auto-changelog --save-dev
+# or
+yarn add auto-changelog --dev
+```
+
+Add `auto-changelog -p; git add CHANGELOG.md` to the `version` scripts in your `package.json`:
 
 ```json
 {
-  "name": "package",
+  "name": "my-awesome-package",
+  "version": "1.0.0",
   "devDependencies": {
     "auto-changelog": "*"
   },

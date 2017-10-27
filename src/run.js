@@ -27,12 +27,22 @@ async function getPackageVersion () {
 }
 
 export default async function run () {
-  const origin = await fetchOrigin(commander.remote)
+  const pkg = await readJson('package.json')
+  let options = { ...commander }
+  if (pkg) {
+    options = {
+      ...options,
+      ...pkg['auto-changelog']
+    }
+  } else if (commander.package) {
+    throw Error('package.json could not be found')
+  }
+  const origin = await fetchOrigin(options.remote)
   const commits = await fetchCommits(origin)
-  const packageVersion = commander.package ? await getPackageVersion() : null
-  const releases = parseReleases(commits, origin, packageVersion, commander.unreleased)
-  const log = compileTemplate(commander.template, { releases })
-  await writeFile(commander.output, log)
-  console.log(`${Buffer.byteLength(log, 'utf8')} bytes written to ${commander.output}`)
+  const packageVersion = options.package ? await getPackageVersion() : null
+  const releases = parseReleases(commits, origin, packageVersion, options.unreleased)
+  const log = await compileTemplate(options.template, { releases })
+  await writeFile(options.output, log)
+  console.log(`${Buffer.byteLength(log, 'utf8')} bytes written to ${options.output}`)
   process.exit(0)
 }

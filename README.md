@@ -83,7 +83,7 @@ Now every time you run [`npm version`](https://docs.npmjs.com/cli/version), the 
 
 #### Custom templates
 
-If you aren’t happy with the default templates or want to tweak something, you can point to a [handlebars](http://handlebarsjs.com) template in your local repo. Check out the [existing templates](https://github.com/CookPete/auto-changelog/blob/master/templates/) to see what is possible.
+If you aren’t happy with the default templates or want to tweak something, you can point to a [handlebars](http://handlebarsjs.com) template in your local repo. Check out the [existing templates](templates) to see what is possible.
 
 Save `changelog-template.hbs` somewhere in your repo:
 
@@ -124,7 +124,7 @@ auto-changelog --template json --output changelog-data.json
 See [keepachangelog.com](http://keepachangelog.com).
 
 #### What does this do?
-The command parses your git commit history and generates a changelog based on tagged versions, merged pull requests and closed issues. See a simple example in [this very repo](https://github.com/CookPete/auto-changelog/blob/master/CHANGELOG.md).
+The command parses your git commit history and generates a changelog based on tagged versions, merged pull requests and closed issues. See a simple example in [this very repo](CHANGELOG.md).
 
 #### Why do I need it?
 Because keeping a changelog can be tedious and difficult to get right. If you don’t have the patience for a hand-crafted, bespoke changelog then this makes keeping one rather easy. It also can be [automated if you’re feeling extra lazy](#what-you-might-do-if-youre-clever).

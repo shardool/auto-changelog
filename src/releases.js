@@ -10,7 +10,8 @@ export function parseReleases (commits, origin, packageVersion, includeUnrelease
       if (release.tag || includeUnreleased) {
         releases.push({
           ...release,
-          href: getCompareLink(commit.tag, release.tag || 'HEAD', origin)
+          href: getCompareLink(commit.tag, release.tag || 'HEAD', origin),
+          commits: release.commits.sort(sortCommits)
         })
       }
       release = newRelease(commit.tag, commit.date)
@@ -53,4 +54,8 @@ function getCompareLink (from, to, origin) {
     return `${origin.repoURL}/compare/${to}%0D${from}`
   }
   return `${origin.repoURL}/compare/${from}...${to}`
+}
+
+function sortCommits (a, b) {
+  return (b.insertions + b.deletions) - (a.insertions + a.deletions)
 }

@@ -11,6 +11,7 @@ const DEFAULT_OUTPUT = 'CHANGELOG.md'
 const DEFAULT_TEMPLATE = 'compact'
 const DEFAULT_REMOTE = 'origin'
 const NPM_VERSION_TAG_PREFIX = 'v'
+const PACKAGE_OPTIONS_KEY = 'auto-changelog'
 
 commander
   .option('-o, --output [file]', `output file, default: ${DEFAULT_OUTPUT}`, DEFAULT_OUTPUT)
@@ -21,14 +22,19 @@ commander
   .version(version)
   .parse(process.argv)
 
+function getOptions (commander, pkg) {
+  if (!pkg) {
+    if (commander.package) {
+      throw Error('package.json could not be found')
+    }
+    return commander
+  }
+  return { ...commander, ...pkg[PACKAGE_OPTIONS_KEY] }
+}
+
 export default async function run () {
   const pkg = await pathExists('package.json') && await readJson('package.json')
-  let options = { ...commander }
-  if (pkg) {
-    options = { ...options, ...pkg['auto-changelog'] }
-  } else if (commander.package) {
-    throw Error('package.json could not be found')
-  }
+  const options = getOptions(commander, pkg)
   const origin = await fetchOrigin(options.remote)
   const commits = await fetchCommits(origin)
   const packageVersion = options.package ? NPM_VERSION_TAG_PREFIX + pkg.version : null
